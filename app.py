@@ -222,6 +222,18 @@ def load_preset(ex):
     st.session_state["v304"] = float(feat.get("V304", 0.0))
 
 
+# form render hone se pehle ek baar default values set kar do session_state me
+# (agar already nahi hai to) - naye streamlit me key+value dono dena allowed nahi hai
+_defaults = {
+    "transaction_amt": 100.0, "card1": 9000, "card_type": "visa", "card_category": "debit",
+    "email_domain": "gmail.com", "addr1": 100.0, "c1": 1, "c2": 1, "c4": 0, "c6": 1, "c8": 1,
+    "c10": 1, "c11": 1, "c13": 3, "c14": 1, "hour": 12, "product": "W", "device_type": "desktop",
+    "v29": 0.0, "v51": 0.0, "v70": 0.0, "v91": 0.0, "v279": 0.0, "v280": 0.0,
+    "v302": 0.0, "v303": 0.0, "v304": 0.0,
+}
+for _k, _v in _defaults.items():
+    st.session_state.setdefault(_k, _v)
+
 # ============================================================
 # ye demo wale buttons hai - click karte hi form niche wala fill ho jayega
 # real data se, phir Detect Fraud dabao result dekhne ke liye
@@ -258,49 +270,47 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("**Basic Details**")
-    transaction_amt = st.number_input("Transaction Amount ($)", min_value=0.0, max_value=32000.0, key="transaction_amt", value=st.session_state.get("transaction_amt", 100.0))
-    card1 = st.number_input("Card1 - Card identifier code", min_value=0, max_value=20000, key="card1", value=st.session_state.get("card1", 9000))
-    card_type = st.selectbox("Card Network", ["visa", "mastercard", "discover", "american express"], key="card_type", index=["visa", "mastercard", "discover", "american express"].index(st.session_state.get("card_type", "visa")))
-    card_category = st.selectbox("Card Category", ["debit", "credit", "debit or credit", "charge card"], key="card_category", index=["debit", "credit", "debit or credit", "charge card"].index(st.session_state.get("card_category", "debit")))
+    transaction_amt = st.number_input("Transaction Amount ($)", min_value=0.0, max_value=32000.0, key="transaction_amt")
+    card1 = st.number_input("Card1 - Card identifier code", min_value=0, max_value=20000, key="card1")
+    card_type = st.selectbox("Card Network", ["visa", "mastercard", "discover", "american express"], key="card_type")
+    card_category = st.selectbox("Card Category", ["debit", "credit", "debit or credit", "charge card"], key="card_category")
     email_domain = st.selectbox("Email Domain",
                                  ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com",
                                   "anonymous.com", "aol.com", "comcast.net", "other"],
-                                 key="email_domain",
-                                 index=["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com",
-                                        "anonymous.com", "aol.com", "comcast.net", "other"].index(st.session_state.get("email_domain", "gmail.com")))
-    addr1 = st.number_input("Billing Address Code", min_value=0.0, max_value=999.0, key="addr1", value=st.session_state.get("addr1", 100.0))
+                                 key="email_domain")
+    addr1 = st.number_input("Billing Address Code", min_value=0.0, max_value=999.0, key="addr1")
 
 with col2:
     st.markdown("**Transaction / Counting Features (C1-C14)**")
-    c1 = st.number_input("C1 - Times card used", min_value=0, max_value=5000, key="c1", value=st.session_state.get("c1", 1))
-    c2 = st.number_input("C2 - Unique addresses used", min_value=0, max_value=5000, key="c2", value=st.session_state.get("c2", 1))
-    c4 = st.number_input("C4 - Suspicious tx count", min_value=0, max_value=2253, key="c4", value=st.session_state.get("c4", 0))
-    c6 = st.number_input("C6 - Unique devices", min_value=0, max_value=2253, key="c6", value=st.session_state.get("c6", 1))
-    c8 = st.number_input("C8 - Unique emails", min_value=0, max_value=3331, key="c8", value=st.session_state.get("c8", 1))
-    c10 = st.number_input("C10 - Unique phones", min_value=0, max_value=3257, key="c10", value=st.session_state.get("c10", 1))
-    c11 = st.number_input("C11 - Unique buyers", min_value=0, max_value=3188, key="c11", value=st.session_state.get("c11", 1))
-    c13 = st.number_input("C13 - Total transactions", min_value=0, max_value=3000, key="c13", value=st.session_state.get("c13", 3))
-    c14 = st.number_input("C14 - Unique banks used", min_value=0, max_value=1500, key="c14", value=st.session_state.get("c14", 1))
+    c1 = st.number_input("C1 - Times card used", min_value=0, max_value=5000, key="c1")
+    c2 = st.number_input("C2 - Unique addresses used", min_value=0, max_value=5000, key="c2")
+    c4 = st.number_input("C4 - Suspicious tx count", min_value=0, max_value=2253, key="c4")
+    c6 = st.number_input("C6 - Unique devices", min_value=0, max_value=2253, key="c6")
+    c8 = st.number_input("C8 - Unique emails", min_value=0, max_value=3331, key="c8")
+    c10 = st.number_input("C10 - Unique phones", min_value=0, max_value=3257, key="c10")
+    c11 = st.number_input("C11 - Unique buyers", min_value=0, max_value=3188, key="c11")
+    c13 = st.number_input("C13 - Total transactions", min_value=0, max_value=3000, key="c13")
+    c14 = st.number_input("C14 - Unique banks used", min_value=0, max_value=1500, key="c14")
 
 with col3:
     st.markdown("**Time, Device & Vesta (V) Signals**")
-    hour = st.slider("Transaction Hour (0-23)", 0, 23, key="hour", value=st.session_state.get("hour", 12))
-    product = st.selectbox("Product Category", ["W", "H", "C", "S", "R"], key="product", index=["W", "H", "C", "S", "R"].index(st.session_state.get("product", "W")))
-    device_type = st.selectbox("Device Type", ["desktop", "mobile", "unknown"], key="device_type", index=["desktop", "mobile", "unknown"].index(st.session_state.get("device_type", "desktop")))
+    hour = st.slider("Transaction Hour (0-23)", 0, 23, key="hour")
+    product = st.selectbox("Product Category", ["W", "H", "C", "S", "R"], key="product")
+    device_type = st.selectbox("Device Type", ["desktop", "mobile", "unknown"], key="device_type")
 
     st.caption("Vesta engineered risk signals")
     vcol1, vcol2 = st.columns(2)
     with vcol1:
-        v29 = st.number_input("V29", min_value=0.0, max_value=20.0, key="v29", value=float(st.session_state.get("v29", 0.0)))
-        v51 = st.number_input("V51", min_value=0.0, max_value=20.0, key="v51", value=float(st.session_state.get("v51", 0.0)))
-        v70 = st.number_input("V70", min_value=0.0, max_value=20.0, key="v70", value=float(st.session_state.get("v70", 0.0)))
-        v91 = st.number_input("V91", min_value=0.0, max_value=20.0, key="v91", value=float(st.session_state.get("v91", 0.0)))
-        v279 = st.number_input("V279", min_value=0.0, max_value=20.0, key="v279", value=float(st.session_state.get("v279", 0.0)))
+        v29 = st.number_input("V29", min_value=0.0, max_value=20.0, key="v29")
+        v51 = st.number_input("V51", min_value=0.0, max_value=20.0, key="v51")
+        v70 = st.number_input("V70", min_value=0.0, max_value=20.0, key="v70")
+        v91 = st.number_input("V91", min_value=0.0, max_value=20.0, key="v91")
+        v279 = st.number_input("V279", min_value=0.0, max_value=20.0, key="v279")
     with vcol2:
-        v280 = st.number_input("V280", min_value=0.0, max_value=20.0, key="v280", value=float(st.session_state.get("v280", 0.0)))
-        v302 = st.number_input("V302", min_value=0.0, max_value=20.0, key="v302", value=float(st.session_state.get("v302", 0.0)))
-        v303 = st.number_input("V303", min_value=0.0, max_value=20.0, key="v303", value=float(st.session_state.get("v303", 0.0)))
-        v304 = st.number_input("V304", min_value=0.0, max_value=20.0, key="v304", value=float(st.session_state.get("v304", 0.0)))
+        v280 = st.number_input("V280", min_value=0.0, max_value=20.0, key="v280")
+        v302 = st.number_input("V302", min_value=0.0, max_value=20.0, key="v302")
+        v303 = st.number_input("V303", min_value=0.0, max_value=20.0, key="v303")
+        v304 = st.number_input("V304", min_value=0.0, max_value=20.0, key="v304")
 
     with st.expander("Advanced (Optional)"):
         d1 = st.number_input("D1 - Days since last tx", min_value=0, max_value=640, value=0)
@@ -309,7 +319,7 @@ with col3:
 
 st.divider()
 
-if st.button("🔍 Detect Fraud", use_container_width=True, type="primary"):
+if st.button("🔍 Detect Fraud", width="stretch", type="primary"):
 
     # agar preset load kiya hai to real wali poori row (223 features) se start karo
     # (jo V-columns UI me dikhte nahi wo bhi sahi rahenge), fir jo form me abhi
@@ -414,6 +424,6 @@ if st.button("🔍 Detect Fraud", use_container_width=True, type="primary"):
     for spine in ax.spines.values():
         spine.set_color("white")
     plt.tight_layout()
-    st.pyplot(fig, use_container_width=False)
+    st.pyplot(fig, width="content")
 
     st.caption("🔴 Red bars push the prediction toward FRAUD · 🟢 Green bars push it toward LEGITIMATE")
